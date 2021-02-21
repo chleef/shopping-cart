@@ -34,9 +34,32 @@ def to_usd(my_price):
 
     Returns: $4,000.44
     """
-    return f"${my_price:,.2f}" #> $12,000.71
+  #  return f"${my_price:,.2f}" #> $12,000.71
+
+from datetime import datetime
+
+go = True
+item = []
+hold = "0"
+while go:
+    hold = input("Please input a product ID: ")
+    if hold == 'DONE':
+        go = False
+    elif int(hold) >= 1 and int(hold) <= 20:
+        item.append(hold)
+    else:
+        print("Please enter an ID between 1 and 20!")
+
+else:
+    print(f"Done selecting {len(item)} products!")
+
+for items in item:
+    id = int(items)
+    matching_product = [product for product in products if product['id'] == id]
+    print(matching_product)
+
+print(datetime.now().strftime('%Y-%m-%d %H:%M:%S %p'))
 
 
-# TODO: write some Python code here to produce the desired output
 
-print(products)
+
