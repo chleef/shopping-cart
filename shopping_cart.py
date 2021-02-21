@@ -56,12 +56,20 @@ while go:
 else:
     print(f"Thank you for selecting {len(item)} products!")
 
+subtotal = 0
 for items in item:
     id = int(items)
     matching_product = [product for product in products if product['id'] == id]
    # print(matching_product)
     print(f" -- {matching_product[0]['name']} ({to_usd(matching_product[0]['price'])})")
+    subtotal = subtotal + matching_product[0]['price']
 
+taxRate = .0875
+taxTotal = subtotal * taxRate
+total = subtotal + taxTotal
+print(f"SUBTOTAL: {to_usd(subtotal)}")
+print(f"TAX: {to_usd(taxTotal)}")
+print(f"TOTAL: {to_usd(total)}")
 print(datetime.now().strftime('%Y-%m-%d %H:%M:%S %p'))
 
 
