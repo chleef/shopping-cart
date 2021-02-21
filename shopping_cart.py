@@ -46,15 +46,24 @@ while go:
     if hold == 'DONE' or hold == 'done':
         go = False
     elif hold.isdigit():
-        if int(hold) >= 1 and int(hold) <= 20:
+        if int(hold) >= 1 and int(hold) <= len(products):
             item.append(hold)
         else:
-            print("Please enter an ID between 1 and 20, or DONE to quit")
+            print(f"Please enter a numerical ID between 1 and {len(products)}, or DONE to quit")
     else:
-        print("Please enter an ID between 1 and 20, or DONE to quit")
+        print(f"Please enter a numerical ID between 1 and {len(products)}, or DONE to quit")
 
 else:
     print(f"Thank you for selecting {len(item)} products!")
+
+
+print(" - - - - - - - - - -")
+print("GREEN LEEF GROCER")
+print("3700 O St. NW, Washington DC")
+print(" - - - - - - - - - -")
+print(f"CHECKOUT AT: {datetime.now().strftime('%Y-%m-%d %H:%M:%S %p')}")
+print(" - - - - - - - - - -")
+print("SELECTED PRODUCTS:")
 
 subtotal = 0
 for items in item:
@@ -64,14 +73,15 @@ for items in item:
     print(f" -- {matching_product[0]['name']} ({to_usd(matching_product[0]['price'])})")
     subtotal = subtotal + matching_product[0]['price']
 
+print(" - - - - - - - - - -")
 taxRate = .0875
 taxTotal = subtotal * taxRate
 total = subtotal + taxTotal
 print(f"SUBTOTAL: {to_usd(subtotal)}")
 print(f"TAX: {to_usd(taxTotal)}")
 print(f"TOTAL: {to_usd(total)}")
-print(datetime.now().strftime('%Y-%m-%d %H:%M:%S %p'))
-
-
+print(" - - - - - - - - - -")
+print("Come again soon!")
+print(" - - - - - - - - - -")
 
 
