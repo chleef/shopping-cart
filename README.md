@@ -16,10 +16,11 @@ Additionally, you will need to install package dependencies:
 pip install -r requirements.txt
 ```
 
-Finally, create a .env file in your respository, using the file to specify your email address:
+Finally, create a .env file in your respository, using the file to specify your email address (that you will be sending from):
 ```
 EMAIL_ADDRESS = "example@example.com"
 ```
+Additionally, you will be required to provide
 
 ### To Play:
 

@@ -65,13 +65,13 @@ else:
 
 
 print(" - - - - - - - - - -")
-print("GREEN LEEF GROCER")
+print("GREEN LEEF GROCERS")
 print("3700 O St. NW, Washington DC")
 print(" - - - - - - - - - -")
 print(f"CHECKOUT AT: {datetime.now().strftime('%Y-%m-%d %H:%M:%S %p')}")
 print(" - - - - - - - - - -")
 print("SELECTED PRODUCTS:")
-
+html_list = ""
 subtotal = 0
 #loop through the numbers and get products and print them
 for items in item:
@@ -79,6 +79,7 @@ for items in item:
     matching_product = [product for product in products if product['id'] == id]
    # print(matching_product)
     print(f" -- {matching_product[0]['name']} ({to_usd(matching_product[0]['price'])})")
+    html_list += f"<li>{matching_product[0]['name']} ({to_usd(matching_product[0]['price'])}) </li>"
     subtotal = subtotal + matching_product[0]['price']
 
 print(" - - - - - - - - - -")
@@ -92,33 +93,51 @@ print(" - - - - - - - - - -")
 print("Come again soon!")
 print(" - - - - - - - - - -")
 
+email = input("Would you like to be emailed a copy of your receipt? (Y/N):")
 
+if email.capitalize() == "Y" or email.capitalize() == "YES":
+    to_whom = ""
+    while '@' not in to_whom or '.' not in to_whom:
+        to_whom = input("Please enter a valid email: ")
 
+    
+    #emailing stuff:
+    SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
+    SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
 
-#emailing stuff:
-#SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
-#SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
-#
-#client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
-#print("CLIENT:", type(client))
-#
-#subject = "Your Receipt from the Green Grocery Store"
-#
-#html_content = "Hello World"
-#print("HTML:", html_content)
-#
-## FYI: we'll need to use our verified SENDER_ADDRESS as the `from_email` param
-## ... but we can customize the `to_emails` param to send to other addresses
-#message = Mail(from_email=SENDER_ADDRESS, to_emails=SENDER_ADDRESS, subject=subject, html_content=html_content)
-#
-#try:
-#    response = client.send(message)
-#
-#    print("RESPONSE:", type(response)) #> <class 'python_http_client.client.Response'>
-#    print(response.status_code) #> 202 indicates SUCCESS
-#    print(response.body)
-#    print(response.headers)
-#
-#except Exception as err:
-#    print(type(err))
-#    print(err)
+    client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
+    print("CLIENT:", type(client))
+
+    subject = "Your Receipt from Green Leef Grocers"
+
+    html_content = f"""
+    <h1>Green Leef Grocers</h1>
+
+    <h3>Hello! Here is your receipt from today's trip:</h2>
+    
+    <ol>
+        {html_list}
+    </ol>
+    <p>Total after tax: {to_usd(total)}</p>
+    <h4>Hope to see you soon!</h3>
+    """
+
+    print("HTML:", html_content)
+
+    # FYI: we'll need to use our verified SENDER_ADDRESS as the `from_email` param
+    # ... but we can customize the `to_emails` param to send to other addresses
+    message = Mail(from_email=SENDER_ADDRESS, to_emails=to_whom, subject=subject, html_content=html_content)
+
+    try:
+        response = client.send(message)
+
+        print("RESPONSE:", type(response)) #> <class 'python_http_client.client.Response'>
+        print(response.status_code) #> 202 indicates SUCCESS
+        print(response.body)
+        print(response.headers)
+
+    except Exception as err:
+        print(type(err))
+        print(err)
+else: #no receipt
+    print("Ok, have a great day!")
