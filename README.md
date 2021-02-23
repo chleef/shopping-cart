@@ -23,7 +23,7 @@ EMAIL_ADDRESS = "example@example.com"
 ```
 Additionally, you will be required to provide a [sendgrid](http://sendgrid.com/) API key:
 ```
-SENDGRID_API_KEY = SG.something
+SENDGRID_API_KEY = yourkey
 ```
 
 ### To Run:
@@ -31,4 +31,4 @@ SENDGRID_API_KEY = SG.something
 ```
 python shopping_cart.py
 ```
-Then, follow the prompts and insert your chosen items, and decide if you want the 
+Then, follow the prompts and insert your chosen items, and decide if you want the emailed receipt.
